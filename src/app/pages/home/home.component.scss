@@ -1,0 +1,38 @@
+.chartDiv {
+    margin-left: 5%;
+}
+
+.h2Title {
+    background-color: #04838F;
+    color: white;
+    text-align: center;
+    width: 255px;
+    margin: auto;
+    border-radius: 7px;
+    font-family: 'Montserrat';
+    font-weight: lighter;
+    padding: 5px 1px;
+}
+
+.custom-tooltip {
+    background-color: #04838F;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-family: 'Montserrat';
+    font-weight: lighter;
+}
+
+::ng-deep ngx-tooltip-content.ngx-charts-tooltip-content.type-tooltip {
+    background-color: #04838F !important;
+    color: white !important;
+    box-shadow: none !important;
+}
+
+::ng-deep .ngx-charts-tooltip-content .tooltip-caret.position-top {
+    border-top-color: #04838F !important;
+}
+
+.fas.fa-medal {
+    font-size: 80%;
+}
