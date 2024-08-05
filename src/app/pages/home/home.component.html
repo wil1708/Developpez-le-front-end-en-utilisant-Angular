@@ -1,7 +1,11 @@
 <H2 class="h2Title">Medals per Country</H2>
+<div class="divNumbers">
+    <p class="pNumberCount">Number of JOs <br> <strong>{{ participationsCount }}</strong></p>
+    <p class="pNumberCount">Number of countries <br> <strong>{{ countriesCount }}</strong></p>
+</div>
 <div class="chartDiv">
     <ngx-charts-pie-chart [view]="view" [scheme]="colorScheme" [results]="chartData" [gradient]="gradient"
-        [legend]="showLegend" [labels]="showLabels" [doughnut]="isDoughnut" (select)="onSelect($event)"
+        [legend]="showLegend" [labels]="showLabels" [doughnut]="isDoughnut" [trimLabels]="false" (select)="onSelect($event)"
         (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
         <ng-template #tooltipTemplate let-model="model">
             <div class="custom-tooltip">

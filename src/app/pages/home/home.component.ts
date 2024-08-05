@@ -1,6 +1,7 @@
-import { Component, HostListener, OnInit, TemplateRef } from '@angular/core';
-import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
-import { map, Observable, of } from 'rxjs';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Color, ScaleType } from '@swimlane/ngx-charts';
+import { map, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Olympic } from 'src/app/core/models/Olympic';
 import { Participation } from 'src/app/core/models/Participation';
 import { OlympicService } from 'src/app/core/services/olympic.service';
@@ -10,8 +11,12 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+
   olympics$!: Observable<Olympic[]>;
+
+  participationsCount: number = 0;
+  countriesCount: number = 0;
 
   view: [number, number] = [700, 400];
   colorScheme: Color = {
@@ -23,59 +28,72 @@ export class HomeComponent implements OnInit {
   gradient: boolean = true;
   showLegend: boolean = false;
   showLabels: boolean = true;
-  isDoughnut: boolean = false;  
+  isDoughnut: boolean = false;
 
-  //Objet itérable utilisé dans la pie charts
   chartData: { name: string, value: number }[] = [];
 
-  constructor(private olympicService: OlympicService) {}
+  private destroy$ = new Subject<void>();
+
+  constructor(private olympicService: OlympicService) { }
 
   ngOnInit(): void {
-
     this.updateViewSize();
 
-    //code initialisant l'observable olymics$
     this.olympics$ = this.olympicService.getOlympics();
-    
-    //code initialisant chartData
+
+    this.olympics$.pipe(
+      map(olympics => olympics.length > 0 ? olympics[0].participations.length : 0),
+      takeUntil(this.destroy$)
+    ).subscribe(count => {
+      this.participationsCount = count;
+    });
+
+    this.olympics$.pipe(
+      map(olympics => olympics.length > 0 ? olympics.length : 0),
+      takeUntil(this.destroy$)
+    ).subscribe(count => {
+      this.countriesCount = count;
+    });
+
     this.olympics$.pipe(
       map(olympics => olympics.map(olympic => ({
         name: olympic.country,
         value: olympic.participations.reduce((sum: number, p: Participation) => sum + p.medalsCount, 0)
-      })))
+      }))),
+      takeUntil(this.destroy$)
     ).subscribe(data => {
       this.chartData = data;
-      console.log('Chart Data:', this.chartData);
     });
+
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onSelect(olympics$: Olympic): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(olympics$)));
+    console.log('Item clicked', olympics$);
   }
 
   onActivate(olympics$: Olympic): void {
-    console.log('Activate', JSON.parse(JSON.stringify(olympics$)));
+    console.log('Activate', olympics$);
   }
 
   onDeactivate(olympics$: Olympic): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(olympics$)));
+    console.log('Deactivate', olympics$);
   }
 
-  // trackById(index: number, item: Olympic): number {
-  //   return item.id;
-  // }
-
   updateViewSize(): void {
-    const width = window.innerWidth * 0.9; // Adjust the multiplier as needed
-    const height = window.innerHeight * 0.5; // Adjust the multiplier as needed
+    const width = window.innerWidth * 0.9;
+    const height = window.innerHeight * 0.5;
     this.view = [width, height];
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: any): void {
+  onResize(event: UIEvent): void {
     this.updateViewSize();
   }
 
-
-
+  
 }

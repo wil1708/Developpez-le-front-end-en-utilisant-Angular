@@ -14,6 +14,27 @@
     padding: 5px 1px;
 }
 
+.divNumbers {
+    display: flex;
+    justify-content: space-between;
+    width: 35%;
+    margin: 20px auto 0;
+}
+
+.pNumberCount {
+    border-color: #04838F;
+    border-style: solid;
+    border-width: 2px;
+    color: gray;
+    text-align: center;
+    width: 255px;
+    margin: 0 auto;
+    border-radius: 7px;
+    font-family: 'Montserrat';
+    font-weight: lighter;
+    padding: 5px 1px;
+}
+
 .custom-tooltip {
     background-color: #04838F;
     color: white;
@@ -31,6 +52,13 @@
 
 ::ng-deep .ngx-charts-tooltip-content .tooltip-caret.position-top {
     border-top-color: #04838F !important;
+}
+
+::ng-deep {
+    .ngx-charts text {
+        font-size: 20px;
+        font-family: 'Montserrat';
+    }
 }
 
 .fas.fa-medal {
