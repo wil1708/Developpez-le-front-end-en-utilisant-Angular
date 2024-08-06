@@ -2,6 +2,7 @@
 import { Participation } from "./Participation";
 
 export class Olympic {
+    [x: string]: any;
 
     constructor(
         public id: number,

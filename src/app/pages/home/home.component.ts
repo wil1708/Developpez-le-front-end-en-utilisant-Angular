@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { map, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -34,13 +35,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private olympicService: OlympicService) { }
+  constructor(private olympicService: OlympicService, private router: Router) { }
 
   ngOnInit(): void {
     this.updateViewSize();
 
     this.olympics$ = this.olympicService.getOlympics();
 
+    // participationsCount : objet iterable sur le nombre de participations aux JOs
     this.olympics$.pipe(
       map(olympics => olympics.length > 0 ? olympics[0].participations.length : 0),
       takeUntil(this.destroy$)
@@ -48,6 +50,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.participationsCount = count;
     });
 
+    // countriesCount = objet iterable sur le nombre de pays
     this.olympics$.pipe(
       map(olympics => olympics.length > 0 ? olympics.length : 0),
       takeUntil(this.destroy$)
@@ -55,6 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.countriesCount = count;
     });
 
+    // chartData : objet iterable pour remplir les données de la pie chart
     this.olympics$.pipe(
       map(olympics => olympics.map(olympic => ({
         name: olympic.country,
@@ -67,13 +71,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  // onSelect(olympics$: Olympic): void {
+  //   console.log('Item clicked', olympics$);
+  // }
 
-  onSelect(olympics$: Olympic): void {
-    console.log('Item clicked', olympics$);
+  onSelect(olympics$: Observable<Olympic>): void {
+    olympics$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(olympic => {
+      this.router.navigateByUrl(`home/${olympic.id}`);
+    });
   }
 
   onActivate(olympics$: Olympic): void {
@@ -84,6 +91,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     console.log('Deactivate', olympics$);
   }
 
+  // methode utilisée pour la partie responsive de la page
   updateViewSize(): void {
     const width = window.innerWidth * 0.9;
     const height = window.innerHeight * 0.5;
@@ -93,6 +101,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
   onResize(event: UIEvent): void {
     this.updateViewSize();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   
