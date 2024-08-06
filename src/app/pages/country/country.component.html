@@ -1,0 +1,16 @@
+<div *ngIf="chartData[0]?.name">
+    <h2 class="h2Title">{{ chartData[0].name }}</h2>
+<button (click)="navigateToHome()"><i class="fa-solid fa-angle-left"></i> Accueil</button>
+</div>
+<div class="divNumbers">
+    <p class="pNumberCount">Number of entries <br> <strong>{{ entriesCount }}</strong></p>
+    <p class="pNumberCount">Total number medals <br> <strong>{{ medalsCount }}</strong></p>
+    <p class="pNumberCount">Total number of athletes <br> <strong>{{ athletesCount }}</strong></p>
+</div>
+<div class="chartDiv">
+    <ngx-charts-line-chart [view]="view" [scheme]="colorScheme" [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="chartData" (select)="onSelect($event)"
+        (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+    </ngx-charts-line-chart>
+</div>

@@ -1,1 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+.h2Title {
+    background-color: #04838F;
+    color: white;
+    text-align: center;
+    width: 255px;
+    margin: auto;
+    border-radius: 7px;
+    font-family: 'Montserrat';
+    font-weight: lighter;
+    padding: 5px 1px;
+}
+
+.divNumbers {
+    display: flex;
+    text-align: center;
+    width: 35%;
+    margin: 20px auto 0;
+}
+
+.pNumberCount {
+    border-color: #04838F;
+    border-style: solid;
+    border-width: 2px;
+    color: gray;
+    text-align: center;
+    width: 255px;
+    margin: 0 auto;
+    border-radius: 7px;
+    font-family: 'Montserrat';
+    font-weight: lighter;
+    padding: 5px 1px;
+}
+
+.chartDiv {
+    margin-left: 5%;
+}

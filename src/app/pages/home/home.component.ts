@@ -16,9 +16,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   olympics$!: Observable<Olympic[]>;
 
+  // objets pour afficher les données de count JOs et countries
   participationsCount: number = 0;
   countriesCount: number = 0;
 
+  // pie chart options utilisées en html par 
   view: [number, number] = [700, 400];
   colorScheme: Color = {
     name: 'custom',
@@ -31,6 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   showLabels: boolean = true;
   isDoughnut: boolean = false;
 
+  // objet pour remplir les données de la pie chart
   chartData: { name: string, value: number }[] = [];
 
   private destroy$ = new Subject<void>();
@@ -61,6 +64,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     // chartData : objet iterable pour remplir les données de la pie chart
     this.olympics$.pipe(
       map(olympics => olympics.map(olympic => ({
+        id: olympic.id,
         name: olympic.country,
         value: olympic.participations.reduce((sum: number, p: Participation) => sum + p.medalsCount, 0)
       }))),
@@ -71,24 +75,23 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-  // onSelect(olympics$: Olympic): void {
-  //   console.log('Item clicked', olympics$);
-  // }
-
-  onSelect(olympics$: Observable<Olympic>): void {
-    olympics$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(olympic => {
-      this.router.navigateByUrl(`home/${olympic.id}`);
-    });
+  //method qui redirige vers le composant countryComponent via url
+  onSelect(data: any): void {
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    let countryName = data.name;
+    countryName = countryName.trim();
+    console.log(countryName)
+    this.router.navigate([`/country/${countryName}`]);
+  }
+  
+  //methode activation pop up médaille au hover sur les pays
+  onActivate(data: any): void {
+    console.log('Activate', data);
   }
 
-  onActivate(olympics$: Olympic): void {
-    console.log('Activate', olympics$);
-  }
-
-  onDeactivate(olympics$: Olympic): void {
-    console.log('Deactivate', olympics$);
+  //methode désactivation pop up médaille au hover sur les pays
+  onDeactivate(data: any): void {
+    console.log('Deactivate', data);
   }
 
   // methode utilisée pour la partie responsive de la page

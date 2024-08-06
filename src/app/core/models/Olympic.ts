@@ -8,6 +8,5 @@ export class Olympic {
         public id: number,
         public country: string,
         public participations: Participation[],
-        public errorMessage : string = 'Erreur de chargement des données'
     ) {}
 }

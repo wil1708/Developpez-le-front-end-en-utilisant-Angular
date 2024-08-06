@@ -13,7 +13,7 @@ export class OlympicService {
 
   constructor(private http: HttpClient) {}
 
-  loadInitialData() {
+  loadInitialData(): Observable<Olympic[]> {
     return this.http.get<Olympic[]>(this.olympicUrl).pipe(
       tap((value) => this.olympics$.next(value)),
       catchError((error) => {
@@ -30,9 +30,28 @@ export class OlympicService {
     return this.olympics$.asObservable();
   }
 
-  getOlympic(id: number): Observable<Olympic | undefined> {
+  getOlympic(id: number): Observable<Olympic> {
     return this.getOlympics().pipe(
-      map((olympics) => olympics.find((olympic) => olympic.id === id))
+      map((olympics) => {
+        const olympic = olympics.find((olympic) => olympic.id === id);
+        if (!olympic) {
+          throw new Error('Olympic not found');
+        }
+        return olympic;
+      })
     );
   }
+
+  getOlympicByCountry(country: string): Observable<Olympic> {
+    return this.getOlympics().pipe(
+      map((olympics) => {
+        const olympic = olympics.find((olympic) => olympic.country.toLowerCase() === country.toLowerCase());
+        if (!olympic) {
+          throw new Error('Olympic not found');
+        }
+        return olympic;
+      })
+    );
+  }
+  
 }
