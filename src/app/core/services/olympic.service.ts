@@ -46,14 +46,11 @@ export class OlympicService {
     return this.getOlympics().pipe(
       map((olympics) => {
         const olympic = olympics.find((olympic) => olympic.country.toLowerCase() === country.toLowerCase());
+        console.log('mylog : ' + olympic)
         if (!olympic) {
           throw new Error('Olympic not found');
         }
         return olympic;
-      }),
-      catchError((error) => {
-        console.error('Error loading Olympic:', error);
-        return throwError(() => new Error('Olympic not found'));
       })
     );
   }

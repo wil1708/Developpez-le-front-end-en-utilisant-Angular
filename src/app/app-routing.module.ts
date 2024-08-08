@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CountryComponent } from './pages/country/country.component';
+import { CountryExistsGuard } from './country-exists.guard';
 
 const routes: Routes = [
   {
@@ -10,7 +11,7 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'country/:country', component: CountryComponent
+    path: 'country/:country', component: CountryComponent, canActivate: [CountryExistsGuard]
   },
   {
     path: '**',

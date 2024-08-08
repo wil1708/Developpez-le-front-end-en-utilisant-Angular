@@ -2,7 +2,10 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.3.
 
-Don't forget to install your node_modules before starting (`npm install`).
+1. First install node.js(LTS) if you don't have it already on your computer.
+2. Then clone or download the project from https://github.com/wil1708/Developpez-le-front-end-en-utilisant-Angular.git .
+3. Don't forget to install your node_modules before starting (`npm install`).
+4. Run the project with the command ng serve inside the project folder using a terminal of your choice.
 
 ## Development server
 
@@ -27,3 +30,13 @@ Once mastered, you should continue by creating the typescript interfaces inside 
 You're now ready to implement the requested features.
 
 Good luck!
+
+## Content and Architecture 
+
+The app is composed of a Home component showing a pie chart showing datas about JOs and countries. 
+Clicking on a country in the pie chart will redirect you to a detailed page using a line chart about the countrys's JOs data.
+Clicking the Home button will redirect you back to the pie chart.
+The app is configured with a not-found component, that will redirect you to a 404 page in case of wrong url.
+The two main components use a service Olympic.service.ts (HttpClient requests) to get their data.
+Olympic.json is used to store the data used by the service.
+App is fully responsive desktop + mobile.

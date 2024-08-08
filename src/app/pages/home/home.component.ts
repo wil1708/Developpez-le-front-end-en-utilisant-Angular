@@ -81,7 +81,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
     let countryName = data['name'];
     countryName = countryName.trim();
-    this.router.navigate([`${countryName}`]);
+    this.router.navigate([`/country/${countryName}`]);
   }
   
   //methode activation pop up médaille au hover sur les pays
