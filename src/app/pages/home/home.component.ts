@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   participationsCount: number = 0;
   countriesCount: number = 0;
 
-  // pie chart options utilisées en html par 
+  // pie chart options utilisées en html
   view: [number, number] = [700, 400];
   colorScheme: Color = {
     name: 'custom',
@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   // objet pour remplir les données de la pie chart
   chartData: { name: string, value: number }[] = [];
 
+  // objet de destruction des observables pour éviter les fuites mémoires
   private destroy$ = new Subject<void>();
 
   constructor(private olympicService: OlympicService, private router: Router) { }
@@ -76,21 +77,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   //method qui redirige vers le composant countryComponent via url
-  onSelect(data: any): void {
+  onSelect(data: Olympic): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-    let countryName = data.name;
+    let countryName = data['name'];
     countryName = countryName.trim();
-    console.log(countryName)
-    this.router.navigate([`/country/${countryName}`]);
+    this.router.navigate([`${countryName}`]);
   }
   
   //methode activation pop up médaille au hover sur les pays
-  onActivate(data: any): void {
+  onActivate(data: Olympic): void {
     console.log('Activate', data);
   }
 
   //methode désactivation pop up médaille au hover sur les pays
-  onDeactivate(data: any): void {
+  onDeactivate(data: Olympic): void {
     console.log('Deactivate', data);
   }
 

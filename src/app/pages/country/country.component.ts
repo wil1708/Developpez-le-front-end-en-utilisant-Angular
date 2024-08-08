@@ -15,10 +15,12 @@ export class CountryComponent {
 
   olympic$!: Observable<Olympic>;
 
-  // objets pour afficher les données ngx-charts-pie-chart
+  // objets pour afficher les données de ngx-charts-pie-chart
   entriesCount: number = 0;
   medalsCount: number = 0;
   athletesCount: number = 0;
+  chartData: { name: string, series: { name: string, value: number }[] }[] = [];
+
 
   // objet de destruction des observables pour éviter les fuites mémoires
   private destroy$ = new Subject<void>();
@@ -41,9 +43,6 @@ export class CountryComponent {
     group: ScaleType.Ordinal,
     domain: ['#956065', '#B8CBE7', '#89A1DB', '#793d52', '#9780A1']
   };
-
-  //objet utilisé pour remplir les données de la line chart
-  chartData: { name: string, series: { name: string, value: number }[] }[] = [];
 
   constructor(private olympicService: OlympicService, private route: ActivatedRoute, private router: Router) { }
 

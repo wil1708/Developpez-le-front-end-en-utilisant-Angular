@@ -10,11 +10,11 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: '404', // wildcard
-    component: NotFoundComponent,
+    path: 'country/:country', component: CountryComponent
   },
   {
-    path: 'country/:country', component: CountryComponent
+    path: '**',
+    component: NotFoundComponent,
   },
 ];
 

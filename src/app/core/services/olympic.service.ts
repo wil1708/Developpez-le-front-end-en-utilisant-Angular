@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Olympic } from '../models/Olympic';
 
@@ -9,7 +9,7 @@ import { Olympic } from '../models/Olympic';
 })
 export class OlympicService {
   private olympicUrl = './assets/mock/olympic.json';
-  private olympics$ = new Subject<Olympic[]>();
+  private olympics$ = new BehaviorSubject<Olympic[]>([]);
 
   constructor(private http: HttpClient) {}
 
@@ -50,6 +50,10 @@ export class OlympicService {
           throw new Error('Olympic not found');
         }
         return olympic;
+      }),
+      catchError((error) => {
+        console.error('Error loading Olympic:', error);
+        return throwError(() => new Error('Olympic not found'));
       })
     );
   }
